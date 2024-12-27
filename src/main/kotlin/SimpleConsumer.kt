@@ -3,8 +3,6 @@ package org.example
 import com.typesafe.config.ConfigBeanFactory
 import com.typesafe.config.ConfigFactory
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.ConsumerRecords
