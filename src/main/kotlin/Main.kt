@@ -1,9 +1,16 @@
 package org.example
 
-fun main() {
-    val producer = SimpleProducer()
-    producer.startProducing()
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-    val consumer = SimpleConsumer()
-    consumer.startConsuming()
+fun main(): Unit = runBlocking {
+    launch {
+        val producer = SimpleProducer()
+        producer.startProducing()
+    }
+
+    launch {
+        val consumer = SimpleConsumer()
+        consumer.startConsuming()
+    }
 }
