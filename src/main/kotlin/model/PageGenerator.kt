@@ -18,5 +18,5 @@ class PageGenerator {
     }
 
     private fun randomName(): String = listOf("robbin", "joe", "daisy", "lisa").random()
-    private fun randomPage(): String = listOf("/main", "/", "daisy", "lisa").random()
+    private fun randomPage(): String = listOf("/home", "/contacts", "/about", "/buy").random()
 }
