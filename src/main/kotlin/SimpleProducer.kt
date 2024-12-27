@@ -2,8 +2,8 @@ package org.example
 
 import com.typesafe.config.ConfigBeanFactory
 import com.typesafe.config.ConfigFactory
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
@@ -12,8 +12,8 @@ import org.example.config.KafkaConfig
 import org.example.model.PageGenerator
 import org.example.model.PageView
 import org.example.serializer.PageViewSerializer
-import java.util.Properties
 import java.util.UUID
+import java.util.Properties
 
 
 class SimpleProducer {
@@ -28,12 +28,13 @@ class SimpleProducer {
             val pageViewEvent = pageGenerator.generateRecord()
 
             generateEvent(kafkaProducer, pageViewEvent)
-            delay(100)
         }
     }
 
-    private suspend fun generateEvent(producer: KafkaProducer<UUID, PageView>, pageView: PageView) = coroutineScope {
-        val metadata = producer.send(ProducerRecord(kafkaConfig.topic, pageView.id, pageView)).get()
+    private suspend fun generateEvent(producer: KafkaProducer<UUID, PageView>, pageView: PageView) {
+        val metadata = withContext(Dispatchers.IO) {
+            producer.send(ProducerRecord(kafkaConfig.topic, pageView.id, pageView)).get()
+        }
         println("Generated event with key: ${pageView.id}, partition: ${metadata.partition()}, offset: ${metadata.offset()}")
     }
 
