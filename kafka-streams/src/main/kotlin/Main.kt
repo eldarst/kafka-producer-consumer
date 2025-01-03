@@ -2,8 +2,9 @@ package org.example
 
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.example.kafka.JobPostingProducer
-import org.example.kafka.JobPostingStream
+import org.example.kafka.impl.JobPostingProducer
+import org.example.kafka.impl.JobPostingStream
+import org.example.kafka.impl.MongoDbStreamWriter
 
 fun main(): Unit = runBlocking {
     launch {
@@ -12,7 +13,12 @@ fun main(): Unit = runBlocking {
     }
 
     launch {
-        val consumer = JobPostingStream()
-        consumer.startConsuming()
+        val jobPostingStream = JobPostingStream()
+        jobPostingStream.startStreaming()
+    }
+
+    launch {
+        val mongoWriterStream = MongoDbStreamWriter()
+        mongoWriterStream.startStreaming()
     }
 }

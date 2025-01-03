@@ -10,5 +10,8 @@
         <module name="producer-consumer" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="kafka-event-log-mongo-db" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
