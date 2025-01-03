@@ -8,10 +8,11 @@ import java.util.UUID
 
 @Serializable
 data class PageView(
-    val id: @Contextual UUID,
+    val userId: Int,
+    val requestId: @Contextual UUID,
     val userName: String,
     val page: String,
     val browser: String,
     @Nullable
-    val viewDate: @Contextual OffsetDateTime?
+    val viewDate: @Contextual OffsetDateTime
 )

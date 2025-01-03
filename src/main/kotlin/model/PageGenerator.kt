@@ -2,21 +2,24 @@ package org.example.model
 
 import com.github.javafaker.Faker
 import java.time.OffsetDateTime
+import java.util.Random
 import java.util.UUID
 
 class PageGenerator {
+    private val userNames = listOf("ali", "rafael", "robbin", "joe", "daisy", "lisa", "eldar", )
+    private fun randomPage(): String = listOf("/home", "/contacts", "/about", "/purchase", "/search", "/orders").random()
+
     fun generateRecord(): PageView {
         val faker = Faker()
+        val userId = Random().nextInt(userNames.size)
 
         return PageView(
-            id = UUID.randomUUID(),
-            userName = randomName(),
+            userId = userId,
+            requestId = UUID.randomUUID(),
+            userName = userNames[userId],
             browser = faker.internet().userAgentAny(),
             page = randomPage(),
             viewDate = OffsetDateTime.now()
         )
     }
-
-    private fun randomName(): String = listOf("robbin", "joe", "daisy", "lisa").random()
-    private fun randomPage(): String = listOf("/home", "/contacts", "/about", "/buy").random()
 }
