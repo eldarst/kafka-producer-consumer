@@ -12,9 +12,5 @@ data class PageView(
     val userName: String,
     val page: String,
     val browser: String,
-<<<<<<< Updated upstream:src/main/kotlin/model/PageView.kt
-    @Nullable
-=======
->>>>>>> Stashed changes:producer-consumer/src/main/kotlin/model/PageView.kt
     val viewDate: @Contextual OffsetDateTime
 )

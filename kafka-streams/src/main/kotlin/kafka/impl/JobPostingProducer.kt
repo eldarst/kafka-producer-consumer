@@ -1,7 +1,8 @@
-package org.example.kafka
+package org.example.kafka.impl
 
 import com.typesafe.config.ConfigBeanFactory
 import com.typesafe.config.ConfigFactory
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.apache.kafka.clients.producer.KafkaProducer
@@ -9,15 +10,16 @@ import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.IntegerSerializer
 import org.example.config.KafkaConfig
+import org.example.kafka.ProducerKafka
 import org.example.model.JobPostingCreated
 import org.example.model.JobPostingGenerator
-import org.example.serializer.JobPostingSerializer
+import org.example.serializer.JsonSerializer
 
-class JobPostingProducer {
-    private val kafkaConfig: KafkaConfig =
+class JobPostingProducer: ProducerKafka {
+    override val kafkaConfig: KafkaConfig =
         ConfigBeanFactory.create(ConfigFactory.load().getConfig("kafkaConfig"), KafkaConfig::class.java)
 
-    suspend fun startProducing() {
+    override suspend fun startProducing() {
         val jobPostingGenerator = JobPostingGenerator()
         val kafkaProducer = getProducer()
 
@@ -34,21 +36,23 @@ class JobPostingProducer {
 
     private suspend fun generateEvent(producer: KafkaProducer<Int, JobPostingCreated>, jobPostingCreated: JobPostingCreated) {
         val metadata = withContext(Dispatchers.IO) {
-            producer.send(ProducerRecord(kafkaConfig.topic, jobPostingCreated.userId, jobPostingCreated))
+            producer.send(ProducerRecord(kafkaConfig.jobTopic, jobPostingCreated.userId, jobPostingCreated))
                 .get()
         }
-        println("Generated event with key: ${jobPostingCreated.userId}, partition: ${metadata.partition()}, offset: ${metadata.offset()}")
+        logger.info { "Generated event with key: ${jobPostingCreated.userId}, partition: ${metadata.partition()}, offset: ${metadata.offset()}" }
     }
 
 
     private fun getProducer(): KafkaProducer<Int, JobPostingCreated> {
         val props = mapOf(
             ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to kafkaConfig.bootstrapServers,
-            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to IntegerSerializer::class.qualifiedName,
-            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to JobPostingSerializer::class.qualifiedName,
             ProducerConfig.RETRIES_CONFIG to 3,
         )
 
-        return KafkaProducer(props)
+        return KafkaProducer(props, IntegerSerializer(), JsonSerializer(JobPostingCreated.serializer()))
+    }
+
+    companion object {
+        val logger = KotlinLogging.logger {  }
     }
 }
