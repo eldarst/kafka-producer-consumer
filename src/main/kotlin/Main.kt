@@ -9,8 +9,10 @@ fun main(): Unit = runBlocking {
         producer.startProducing()
     }
 
-    launch {
-        val consumer = SimpleConsumer()
-        consumer.startConsuming()
+    for (i in 1..3) {
+        launch {
+            val consumer = SimpleConsumer(i)
+            consumer.startConsuming()
+        }
     }
 }
