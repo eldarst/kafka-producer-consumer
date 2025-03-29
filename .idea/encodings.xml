@@ -5,6 +5,8 @@
     <file url="file://$PROJECT_DIR$/kafka-event-log-mongo-db/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/kafka-streams/src/main/kotlin" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/kafka-streams/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/kafka-table/src/main/kotlin" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/kafka-table/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/producer-consumer/src/main/kotlin" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/producer-consumer/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/kotlin" charset="UTF-8" />

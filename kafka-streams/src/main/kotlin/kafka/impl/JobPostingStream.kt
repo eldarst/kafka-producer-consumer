@@ -3,7 +3,6 @@ package org.example.kafka.impl
 import com.typesafe.config.ConfigBeanFactory
 import com.typesafe.config.ConfigFactory
 import io.github.oshai.kotlinlogging.KotlinLogging
-import java.util.Properties
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.apache.kafka.common.serialization.Serdes
@@ -19,6 +18,7 @@ import org.example.model.JobPostingCreated
 import org.example.model.JobPostingWithType
 import org.example.serializer.JsonDeserializer
 import org.example.serializer.JsonSerializer
+import java.util.Properties
 
 class JobPostingStream: StreamKafka {
     override val kafkaConfig: KafkaConfig =
